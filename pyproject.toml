@@ -2,12 +2,12 @@
 description = "Chercher plugin that adds support for DOCX files."
 authors = [{ name = "dnlzrgz", email = "contact@dnlzrgz.com" }]
 name = "chercher-plugin-docx"
-version = "0.1.1"
+version = "0.1.3"
 readme = "README.md"
 license = "MIT"
 classifiers = []
 requires-python = ">=3.13"
-dependencies = ["chercher>=0.1.20", "pymupdf>=1.25.5"]
+dependencies = ["chercher>=0.1.23", "pymupdf>=1.25.5"]
 
 [project.urls]
 Homepage = "https://github.com/dnlzrgz/chercher-plugin-docx"

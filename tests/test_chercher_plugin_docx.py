@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-from chercher_plugin_docx import ingest
+from chercher_plugin_docx import ingest, prune
 from chercher import Document
 
 
@@ -10,7 +10,7 @@ def sample_files():
     return [file.as_uri() for file in samples_dir.iterdir() if file.is_file()]
 
 
-def test_valid_file(sample_files):
+def test_ingest_valid_file(sample_files):
     for uri in sample_files:
         documents = list(ingest(uri=uri))
         assert documents != []
@@ -22,7 +22,7 @@ def test_valid_file(sample_files):
             assert doc.metadata
 
 
-def test_invalid_file(tmp_path):
+def test_ingest_invalid_file(tmp_path):
     p = tmp_path / "test.txt"
     p.write_text("Test")
 
@@ -31,13 +31,29 @@ def test_invalid_file(tmp_path):
     assert documents == []
 
 
-def test_missing_file(tmp_path):
+def test_ingest_missing_file(tmp_path):
     p = tmp_path / "missingno.epub"
     documents = list(ingest(uri=p.as_uri()))
     assert documents == []
 
 
-def test_invalid_uri():
+def test_ingest_invalid_uri():
     uri = "https://drive.com/haiku.docx"
     documents = list(ingest(uri=uri))
     assert documents == []
+
+
+def test_prune_valid_file(sample_files):
+    uri = sample_files[0]
+    assert prune(uri=uri) is None
+
+
+def test_prune_missing_file(tmp_path):
+    p = tmp_path / "missingno.docx"
+    uri = p.as_uri()
+    assert prune(uri=uri)
+
+
+def test_prune_invalid_uri():
+    uri = "https://drive.com/haiku.docx"
+    assert prune(uri=uri) is None
